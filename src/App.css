@@ -1,46 +1,9 @@
-.App {
-  margin-left: 30px;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  width: 700px;
-  justify-content: space-around;
-  align-items: flex-start;
+ul {
+  list-style-type: none;
+  max-width: 150px;
 }
 
-.Person {
-  padding: 10px;
-  width: 200px;
-  cursor: pointer;
-  border: 1px solid gray;
-}
-
-.Person:nth-child(n+2) {
-  border-top: 0;
-}
-
-.PersonDetails {
-  width: 300px;
-}
-
-.PersonPhoto {
-  display: block;
-  width: 300px;
-}
-
-.PersonDetails>div:nth-child(n+2) {
-  border: 1px solid gray;
-}
-
-.PersonDetails>div:nth-child(n+2) {
-  border-top: 0;
-}
-
-.PersonName {
-  padding: 30px 10px;
-}
-
-.Det {
-  padding: 10px;
+.selected {
+  background-color: blue;
+  color: white;
 }

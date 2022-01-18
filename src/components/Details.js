@@ -1,45 +1,40 @@
-import {useEffect, useState} from 'react';
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-const Details = (props) => {
-    const {info} = props;
-    const [details, setDetails] = useState(null);
-    const [isLoading,setLoading] = useState(false);
+export default function Details({ info }) {
+    const [data, setData] = useState({});
+    const [isLoading, setLoading] = useState(false);
+    useEffect(() => {
+        if (!info.id) return;
+        const fetchData = async () => {
+          setLoading(true);
+          try {
+            const json = await fetch(
+              `https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${info.id}.json`
+            );
+            const parsedItems = await json.json();
+            setData(parsedItems);
+            setLoading(false);
+          } catch (error) {
+            console.log(error)
+          } finally {
+            setLoading(false);
+          }      
+        };
+        fetchData();
 
-    useEffect( ()=> {
-        if (info) {
-            setLoading(true);
-            fetch(`https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${info.id}.json`)
-                .then(response => response.json())
-                .then(data => {
-                    setDetails(data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.log(err);
-                    setLoading(false);
-                });
-        }
-    }, [info]);
-
-    return (
-        <div className="PersonDetails">
-            {isLoading ? <div className="Loading">Loading...</div> : null}
-            {details ?
-                <>
-                    <img className="PersonPhoto" src={details.avatar} alt='avatar' />
-                    <div className="PersonName">{details.name}</div>
-                    <div className="PersonCity Det">City: {details.details.city}</div>
-                    <div className="PersonCompany Det">Company: {details.details.company}</div>
-                    <div className="PersonPosition Det">Position: {details.details.position}</div>
-                </>
-            : null }
-        </div>
-    );
-};
-
-Details.propTypes = {
-    info: PropTypes.object
+    }, [info.id]);
+    return data.id && !isLoading ? (
+      <div>
+        <img src={data.avatar} alt="" />
+        <h3>{data.name}</h3>
+        <div>City: {data.details && data.details.city}</div>
+        <div>Company: {data.details && data.details.company}</div>
+        <div>Position: {data.details && data.details.position}</div>
+      </div>
+    ) : isLoading ? <div style={{fontSize: 25 }}>Loading...</div> : null;
 }
 
-export default Details;
+Details.propTypes = {
+  info: PropTypes.object.isRequired,
+}
